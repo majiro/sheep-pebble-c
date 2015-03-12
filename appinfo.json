@@ -1,0 +1,41 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        ""
+    ],
+    "companyName": "Jiro Kanayama",
+    "longName": "SHEEP",
+    "projectType": "native",
+    "resources": {
+        "media": [
+            {
+                "file": "images/bg.png",
+                "name": "IMAGE_BG",
+                "type": "png"
+            },
+            {
+                "file": "images/fence.png",
+                "name": "IMAGE_FENCE",
+                "type": "png-trans"
+            },
+            {
+                "file": "images/sheep01.png",
+                "name": "IMAGE_SHEEP01",
+                "type": "png-trans"
+            },
+            {
+                "file": "images/sheep00.png",
+                "name": "IMAGE_SHEEP00",
+                "type": "png-trans"
+            }
+        ]
+    },
+    "sdkVersion": "2",
+    "shortName": "SHEEP",
+    "uuid": "302bedb1-84b5-4871-9cee-7889589a65d2",
+    "versionCode": 1,
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": false
+    }
+}
