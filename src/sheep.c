@@ -8,6 +8,9 @@
 
 #define FPS 10
 
+#define TRUE 1
+#define FALSE 0
+
 static Window *window;
 
 static AppTimer *progress_timer;
@@ -39,6 +42,9 @@ static char *nofsheep = " sheep";
 
 static int DEFAULT_WIDTH = 144;
 static int DEFAULT_HEIGHT = 144;
+
+#define GROUND_HEIGHT_RATIO 0.9
+static int ground_height = 108;
 
 static int gate_is_widely_open = 0;
 
@@ -148,17 +154,16 @@ static void window_load(Window *window) {
 }
 
 static int calc_jump_x(int y){
-  fw = fence_image.width();
-  fh = fence_image.height();
+  int fw = fence_image_white->bounds.size.w;
+  int fh = fence_image_white->bounds.size.h;
   return -1 * (y - DEFAULT_HEIGHT) * fw / fh + (DEFAULT_WIDTH - fw) / 2;
 }
 
-
 static void send_out_sheep(int asheep){
-  sheep_flock[asheep][IS_RUNNING] = True;
+  sheep_flock[asheep][IS_RUNNING] = TRUE;
   sheep_flock[asheep][X] = DEFAULT_WIDTH + 17;
-  sheep_flock[asheep][Y] = DEFAULT_HEIGHT - ground_height + ( rand() % (ground_height - 13);
-  sheep_flock[asheep][x_on_jump] = calc_jump_x(sheep_flock[asheep][Y]);
+  sheep_flock[asheep][Y] = DEFAULT_HEIGHT - ground_height + ( rand() % (ground_height - 13));
+  sheep_flock[asheep][X_ON_JUMP] = calc_jump_x(sheep_flock[asheep][Y]);
 }
 
 static void update() {
