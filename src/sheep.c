@@ -32,6 +32,8 @@ static GBitmap *sheep01_image_black;
 static BitmapLayer *sheep_image_white_layer;
 static BitmapLayer *sheep_image_black_layer;
 
+static Layer *s_canvas_layer;
+
 static TextLayer *text_layer; // Used as a background to help demonstrate transparency.
 
 static void progress_timer_callback(void *data);
@@ -93,6 +95,31 @@ mknofsheep (int value, char *unit, char *result)
   return result;
 }
 
+static void canvas_update_proc(Layer *this_layer, GContext *ctx) {
+  GRect bounds = layer_get_bounds(this_layer);
+
+  // Get the center of the screen (non full-screen)
+  GPoint center = GPoint(bounds.size.w / 2, (bounds.size.h / 2));
+/*
+  // Draw the 'loop' of the 'P'
+  graphics_context_set_fill_color(ctx, GColorBlack);
+  graphics_fill_circle(ctx, center, 40);
+  graphics_context_set_fill_color(ctx, GColorWhite);
+  graphics_fill_circle(ctx, center, 35);
+
+  // Draw the 'stalk'
+  graphics_context_set_fill_color(ctx, GColorBlack);
+  graphics_fill_rect(ctx, GRect(32, 40, 5, 100), 0, GCornerNone);
+*/
+
+  graphics_draw_bitmap_in_rect(ctx, sheep00_image_white, GRect(32,40,17,13));
+//  graphics_draw_bitmap_in_rect(ctx, sheep00_image_black, GRect(32,40,17,13));
+
+//  graphics_draw_bitmap_in_rect(ctx, sheep01_image_white, GRect(32+10,40+10,17,13));
+  graphics_draw_bitmap_in_rect(ctx, sheep01_image_black, GRect(32+10,40+10,17,13));
+
+}
+
 static void window_load(Window *window) {
   Layer *window_layer = window_get_root_layer(window);
 //  GRect bounds = layer_get_bounds(window_layer);
@@ -135,6 +162,7 @@ static void window_load(Window *window) {
   bitmap_layer_set_compositing_mode(fence_image_black_layer, GCompOpClear);
   layer_add_child(window_layer, bitmap_layer_get_layer(fence_image_black_layer));
 
+/*
   // Use GCompOpOr to display the white portions of the sheep image
   sheep_image_white_layer = bitmap_layer_create(image_frame);
   bitmap_layer_set_alignment(sheep_image_white_layer, GAlignTopLeft);
@@ -144,10 +172,18 @@ static void window_load(Window *window) {
 
   // Use GCompOpClear to display the black portions of the sheep image
   sheep_image_black_layer = bitmap_layer_create(image_frame);
-  bitmap_layer_set_alignment(sheep_image_black_layer, GAlignTopLeft);
+  bitmap_layer_set_alignment(sheep_image_black_layer, GAlignTop);
   bitmap_layer_set_bitmap(sheep_image_black_layer, sheep00_image_black);
   bitmap_layer_set_compositing_mode(sheep_image_black_layer, GCompOpClear);
   layer_add_child(window_layer, bitmap_layer_get_layer(sheep_image_black_layer));
+*/
+  // Create Layer
+  s_canvas_layer = layer_create(GRect(0, 0, image_frame.size.w, image_frame.size.h));
+  layer_add_child(window_layer, s_canvas_layer);
+
+  // Set the update_proc
+  layer_set_update_proc(s_canvas_layer, canvas_update_proc);
+
 
   text_layer = text_layer_create(GRect(0,0, 144, 15));
   layer_add_child(window_layer, text_layer_get_layer(text_layer));
@@ -202,6 +238,9 @@ static void window_unload(Window *window) {
   bitmap_layer_destroy(sheep_image_white_layer);
   bitmap_layer_destroy(sheep_image_black_layer);
 
+  layer_destroy(s_canvas_layer);
+//  layer_destroy(text_layer);
+
   gbitmap_destroy(bg_image);
   gbitmap_destroy(fence_image_white);
   gbitmap_destroy(fence_image_black);
@@ -225,6 +264,7 @@ static void init(void) {
 
 static void deinit(void) {
   window_destroy(window);
+
 }
 
 int main(void) {
