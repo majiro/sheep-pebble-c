@@ -41,9 +41,11 @@ static TextLayer *text_layer; // Used as a background to help demonstrate transp
 
 static void progress_timer_callback(void *data);
 
-static int counter = 0;
-static char counter_buffer[256];
+static int sheep_count = 0;
+static char sheep_count_buffer[256];
 static char *nofsheep = " sheep";
+
+static int some_sheep_is_running;
 
 #define DEFAULT_WIDTH 144
 #define DEFAULT_HEIGHT 144
@@ -193,7 +195,7 @@ static void send_out_sheep(int asheep){
   sheep_flock[asheep][X_ON_JUMP] = calc_jump_x(sheep_flock[asheep][Y]);
 }
 
-static void clear_sheep(asheep){
+static void clear_sheep(int asheep){
   sheep_flock[asheep][IS_RUNNING] = FALSE;
   sheep_flock[asheep][X] = 0;
   sheep_flock[asheep][Y] = 0;
@@ -227,15 +229,16 @@ static void update() {
 
     // behavior during jump
     if (sheep_flock[asheep][PROGRESS_ON_JUMP] > 0 ){
-      if (sheep_flock[asheep][PROGRESS_ON_JUMP < TOP_ON_JUMP) {
-	  sheep_flock[asheep][Y] -= Y_MOVING_DIST;
-	  sheep_flock[asheep][PROGRESS_ON_JUMP] += 1;
-	} else if (sheep_flock[asheep][PROGRESS_ON_JUMP] < TOP_ON_JUMP * 2){
-	  sheep_flock[asheep][Y] += Y_MOVING_DIST;
-	  sheep_flock[asheep][PROGRESS_ON_JUMP] += 1;
-	} else {
-	  sheep_flock[asheep][PROGRESS_ON_JUMP] = 0;
-	}
+      if (sheep_flock[asheep][PROGRESS_ON_JUMP] < TOP_ON_JUMP) {
+        sheep_flock[asheep][Y] -= Y_MOVING_DIST;
+	    sheep_flock[asheep][PROGRESS_ON_JUMP] += 1;
+	  } else if (sheep_flock[asheep][PROGRESS_ON_JUMP] < TOP_ON_JUMP * 2){
+	    sheep_flock[asheep][Y] += Y_MOVING_DIST;
+	    sheep_flock[asheep][PROGRESS_ON_JUMP] += 1;
+	  } else {
+	    sheep_flock[asheep][PROGRESS_ON_JUMP] = 0;
+	  }
+    }
 
 	// count up
 	if (sheep_flock[asheep][PROGRESS_ON_JUMP] == TOP_ON_JUMP){
@@ -246,25 +249,25 @@ static void update() {
 	if (sheep_flock[asheep][X] < -1 * 17){
 	  some_sheep_is_running = FALSE;
 	  clear_sheep(asheep);
-	  for (int asheep in self.sheep_flock) {
+	  for (int asheep=0;asheep<MAX_SHEEP_NUMBER;asheep++) {
 	    if (sheep_flock[asheep][IS_RUNNING]==TRUE) {
 	      some_sheep_is_running = TRUE;
 	      break;
 	    }
 	    if (some_sheep_is_running == FALSE) {
-	      self.send_out_sheep(asheep);
+	      send_out_sheep(asheep);
 	    }
 	  }
 	}
-  }
+    }
 
-  counter++;
-  mknofsheep(counter++, nofsheep, counter_buffer);
+  sheep_count++;
+  mknofsheep(sheep_count, nofsheep, sheep_count_buffer);
 }
 
 
 static void draw() {
-  text_layer_set_text(text_layer, counter_buffer);
+  text_layer_set_text(text_layer, sheep_count_buffer);
 }
 
 static void progress_timer_callback(void *data) {
