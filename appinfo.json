@@ -9,16 +9,6 @@
     "resources": {
         "media": [
             {
-                "file": "images/sheep00a.png",
-                "name": "IMAGE_SHEEP00A",
-                "type": "png"
-            },
-            {
-                "file": "images/pug.png",
-                "name": "IMAGE_PUG",
-                "type": "png"
-            },
-            {
                 "file": "images/bg.png",
                 "name": "IMAGE_BG",
                 "type": "png"

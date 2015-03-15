@@ -107,17 +107,6 @@ static void canvas_white_update_proc(Layer *this_layer, GContext *ctx) {
 
   // Get the center of the screen (non full-screen)
 //  GPoint center = GPoint(bounds.size.w / 2, (bounds.size.h / 2));
-/*
-  // Draw the 'loop' of the 'P'
-  graphics_context_set_fill_color(ctx, GColorBlack);
-  graphics_fill_circle(ctx, center, 40);
-  graphics_context_set_fill_color(ctx, GColorWhite);
-  graphics_fill_circle(ctx, center, 35);
-
-  // Draw the 'stalk'
-  graphics_context_set_fill_color(ctx, GColorBlack);
-  graphics_fill_rect(ctx, GRect(32, 40, 5, 100), 0, GCornerNone);
-*/
   graphics_context_set_compositing_mode(ctx, GCompOpOr);
 
   graphics_draw_bitmap_in_rect(ctx, sheep00_image_white, GRect(32,40,17,13));
@@ -153,8 +142,6 @@ static void window_load(Window *window) {
 
   sheep01_image_white = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_SHEEP01_WHITE);
   sheep01_image_black = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_SHEEP01_BLACK);
-
-  sheep00_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_SHEEP00A);
 
   // Use GCompOpOr to display the white portions of the fence image
   bg_image_layer = bitmap_layer_create(image_frame);
@@ -225,6 +212,16 @@ static void update() {
 
     // Run
     sheep_flock[asheep][X] -= X_MOVING_DIST;
+
+    // start to jump when sheep reach to jump point
+    if (sheep_flock[asheep][PROGRESS_ON_JUMP]>0 && sheep_flock[asheep][X_ON_JUMP]<=sheep_flock[asheep][X] && sheep_flock[asheep][X] < sheep_flock[asheep][X_ON_JUMP] + X_MOVING_DIST){
+        sheep_flock[asheep][PROGRESS_ON_JUMP] += 1;
+    }
+
+
+
+
+
   }
 
   counter++;
