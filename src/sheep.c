@@ -117,6 +117,31 @@ static void canvas_white_update_proc(Layer *this_layer, GContext *ctx) {
   graphics_draw_bitmap_in_rect(ctx, sheep01_image_black, GRect(32+10,40+10,17,13));
 
   graphics_draw_bitmap_in_rect(ctx, sheep00_image, GRect(32+20,40+20,17,12));
+
+
+
+
+  // Draw the sheep
+  for (int asheep=0;asheep<MAX_SHEEP_NUMBER;asheep++){
+    if(sheep_flock[asheep][IS_RUNNING]==TRUE){
+      if(sheep_flock[asheep][PROGRESS_ON_JUMP]>0){
+	graphics_draw_bitmap_in_rect(ctx, sheep00_image_white,
+				     GRect(sheep_flock[asheep][X],sheep_flock[asheep][Y],17,12));
+      } else {
+	if(sheep_flock[asheep][STRETCH_LEG]==TRUE){
+	  graphics_draw_bitmap_in_rect(ctx, sheep00_image_white,
+				       GRect(sheep_flock[asheep][X],
+					     sheep_flock[asheep][Y],17,12));
+	  sheep_flock[asheep][STRETCH_LEG]=FALSE;
+	} else {
+	  graphics_draw_bitmap_in_rect(ctx, sheep01_image_white,
+				       GRect(sheep_flock[asheep][X],
+					     sheep_flock[asheep][Y],17,12));
+	  sheep_flock[asheep][STRETCH_LEG]=TRUE;
+	}
+      }
+    }
+  }
 }
 
 static void canvas_black_update_proc(Layer *this_layer, GContext *ctx) {
@@ -231,37 +256,36 @@ static void update() {
     if (sheep_flock[asheep][PROGRESS_ON_JUMP] > 0 ){
       if (sheep_flock[asheep][PROGRESS_ON_JUMP] < TOP_ON_JUMP) {
         sheep_flock[asheep][Y] -= Y_MOVING_DIST;
-	    sheep_flock[asheep][PROGRESS_ON_JUMP] += 1;
-	  } else if (sheep_flock[asheep][PROGRESS_ON_JUMP] < TOP_ON_JUMP * 2){
-	    sheep_flock[asheep][Y] += Y_MOVING_DIST;
-	    sheep_flock[asheep][PROGRESS_ON_JUMP] += 1;
-	  } else {
-	    sheep_flock[asheep][PROGRESS_ON_JUMP] = 0;
-	  }
+	sheep_flock[asheep][PROGRESS_ON_JUMP] += 1;
+      } else if (sheep_flock[asheep][PROGRESS_ON_JUMP] < TOP_ON_JUMP * 2){
+	sheep_flock[asheep][Y] += Y_MOVING_DIST;
+	sheep_flock[asheep][PROGRESS_ON_JUMP] += 1;
+      } else {
+	sheep_flock[asheep][PROGRESS_ON_JUMP] = 0;
+      }
     }
 
-	// count up
-	if (sheep_flock[asheep][PROGRESS_ON_JUMP] == TOP_ON_JUMP){
-	  sheep_count += 1;
-	}
-
-	// go away and send out a sheep if there is no sheep on run
-	if (sheep_flock[asheep][X] < -1 * 17){
-	  some_sheep_is_running = FALSE;
-	  clear_sheep(asheep);
-	  for (int asheep=0;asheep<MAX_SHEEP_NUMBER;asheep++) {
-	    if (sheep_flock[asheep][IS_RUNNING]==TRUE) {
-	      some_sheep_is_running = TRUE;
-	      break;
-	    }
-	    if (some_sheep_is_running == FALSE) {
-	      send_out_sheep(asheep);
-	    }
-	  }
-	}
+    // count up
+    if (sheep_flock[asheep][PROGRESS_ON_JUMP] == TOP_ON_JUMP){
+      sheep_count += 1;
     }
 
-  sheep_count++;
+    // go away and send out a sheep if there is no sheep on run
+    if (sheep_flock[asheep][X] < -1 * 17){
+      some_sheep_is_running = FALSE;
+      clear_sheep(asheep);
+      for (int asheep=0;asheep<MAX_SHEEP_NUMBER;asheep++) {
+	if (sheep_flock[asheep][IS_RUNNING]==TRUE) {
+	  some_sheep_is_running = TRUE;
+	  break;
+	}
+	if (some_sheep_is_running == FALSE) {
+	  send_out_sheep(asheep);
+	}
+      }
+    }
+  }
+
   mknofsheep(sheep_count, nofsheep, sheep_count_buffer);
 }
 
@@ -316,3 +340,4 @@ int main(void) {
   app_event_loop();
   deinit();
 }
+
