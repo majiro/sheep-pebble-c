@@ -193,6 +193,13 @@ static void send_out_sheep(int asheep){
   sheep_flock[asheep][X_ON_JUMP] = calc_jump_x(sheep_flock[asheep][Y]);
 }
 
+static void clear_sheep(asheep){
+  sheep_flock[asheep][IS_RUNNING] = FALSE;
+  sheep_flock[asheep][X] = 0;
+  sheep_flock[asheep][Y] = 0;
+  sheep_flock[asheep][X_ON_JUMP] = 0;
+}
+
 static void update() {
   // Send out a sheep
   if (gate_is_widely_open) {
@@ -218,10 +225,37 @@ static void update() {
         sheep_flock[asheep][PROGRESS_ON_JUMP] += 1;
     }
 
+    // behavior during jump
+    if (sheep_flock[asheep][PROGRESS_ON_JUMP] > 0 ){
+      if (sheep_flock[asheep][PROGRESS_ON_JUMP < TOP_ON_JUMP) {
+	  sheep_flock[asheep][Y] -= Y_MOVING_DIST;
+	  sheep_flock[asheep][PROGRESS_ON_JUMP] += 1;
+	} else if (sheep_flock[asheep][PROGRESS_ON_JUMP] < TOP_ON_JUMP * 2){
+	  sheep_flock[asheep][Y] += Y_MOVING_DIST;
+	  sheep_flock[asheep][PROGRESS_ON_JUMP] += 1;
+	} else {
+	  sheep_flock[asheep][PROGRESS_ON_JUMP] = 0;
+	}
 
+	// count up
+	if (sheep_flock[asheep][PROGRESS_ON_JUMP] == TOP_ON_JUMP){
+	  sheep_count += 1;
+	}
 
-
-
+	// go away and send out a sheep if there is no sheep on run
+	if (sheep_flock[asheep][X] < -1 * 17){
+	  some_sheep_is_running = FALSE;
+	  clear_sheep(asheep);
+	  for (int asheep in self.sheep_flock) {
+	    if (sheep_flock[asheep][IS_RUNNING]==TRUE) {
+	      some_sheep_is_running = TRUE;
+	      break;
+	    }
+	    if (some_sheep_is_running == FALSE) {
+	      self.send_out_sheep(asheep);
+	    }
+	  }
+	}
   }
 
   counter++;
