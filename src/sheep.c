@@ -281,14 +281,14 @@ static void update() {
     if (sheep_flock[asheep][X] < -1 * 17){
       some_sheep_is_running = FALSE;
       clear_sheep(asheep);
-      if (int asheep=0;asheep<MAX_SHEEP_NUMBER;asheep++) {
+      for (int asheep=0;asheep<MAX_SHEEP_NUMBER;asheep++) {
         if (sheep_flock[asheep][IS_RUNNING]==TRUE) {
           some_sheep_is_running = TRUE;
           break;
         }
-        if (some_sheep_is_running == FALSE) {
-          send_out_sheep(asheep);
-        }
+      }
+      if (some_sheep_is_running == FALSE) {
+        send_out_sheep(asheep);
       }
     }
   }
