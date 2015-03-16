@@ -103,8 +103,6 @@ mknofsheep (int value, char *unit, char *result)
 static void canvas_white_update_proc(Layer *this_layer, GContext *ctx) {
   APP_LOG(APP_LOG_LEVEL_DEBUG, "canvas_white_update_proc()");
   
-  GRect bounds = layer_get_bounds(this_layer);
-
   graphics_context_set_compositing_mode(ctx, GCompOpOr);
 
   // Draw the sheep
@@ -215,16 +213,14 @@ static int calc_jump_x(int y){
 }
 
 static void send_out_sheep(int asheep){
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "send_out_sheep(%d)", asheep);
   sheep_flock[asheep][IS_RUNNING] = TRUE;
   sheep_flock[asheep][X] = DEFAULT_WIDTH + 17;
   sheep_flock[asheep][Y] = DEFAULT_HEIGHT - ground_height + ( rand() % (ground_height - 13));
   sheep_flock[asheep][X_ON_JUMP] = calc_jump_x(sheep_flock[asheep][Y]);
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "calc_jump_x(%d)=%d", asheep, sheep_flock[asheep][X_ON_JUMP]);
 }
 
 static void clear_sheep(int asheep){
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "clear_sheep(%d)", asheep);
-  
   sheep_flock[asheep][IS_RUNNING] = FALSE;
   sheep_flock[asheep][X] = 0;
   sheep_flock[asheep][Y] = 0;
