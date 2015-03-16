@@ -251,7 +251,7 @@ static void update() {
     sheep_flock[asheep][X] -= X_MOVING_DIST;
 
     // start to jump when sheep reach to jump point
-    if (sheep_flock[asheep][PROGRESS_ON_JUMP]>0 && sheep_flock[asheep][X_ON_JUMP]<=sheep_flock[asheep][X] && sheep_flock[asheep][X] < sheep_flock[asheep][X_ON_JUMP] + X_MOVING_DIST){
+    if (sheep_flock[asheep][PROGRESS_ON_JUMP]==0 && sheep_flock[asheep][X_ON_JUMP]<=sheep_flock[asheep][X] && sheep_flock[asheep][X] < sheep_flock[asheep][X_ON_JUMP] + X_MOVING_DIST){
         sheep_flock[asheep][PROGRESS_ON_JUMP] += 1;
     }
 
