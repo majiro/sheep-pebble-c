@@ -25,8 +25,6 @@ static GBitmap *fence_image_black;
 static BitmapLayer *fence_image_white_layer;
 static BitmapLayer *fence_image_black_layer;
 
-static GBitmap *sheep00_image;
-
 static GBitmap *sheep00_image_white;
 static GBitmap *sheep00_image_black;
 static GBitmap *sheep01_image_white;
@@ -35,7 +33,7 @@ static GBitmap *sheep01_image_black;
 static Layer *canvas_white_layer;
 static Layer *canvas_black_layer;
 
-static TextLayer *text_layer; // Used as a background to help demonstrate transparency.
+static TextLayer *text_layer;
 
 static void progress_timer_callback(void *data);
 
