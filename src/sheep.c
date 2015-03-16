@@ -15,8 +15,7 @@ static Window *window;
 
 static AppTimer *progress_timer;
 
-//static unsigned int sleep_time = FPS*10;
-static unsigned int sleep_time = FPS*20;
+static unsigned int sleep_time = FPS*10;
 
 static GBitmap *bg_image;
 static BitmapLayer *bg_image_layer;
@@ -53,7 +52,7 @@ static int some_sheep_is_running=FALSE;
 #define TOP_ON_JUMP 5
 
 #define GROUND_HEIGHT_RATIO 0.9
-static int ground_height = 108;
+static int ground_height = 70;
 
 static int gate_is_widely_open = FALSE;
 
