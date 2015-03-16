@@ -15,7 +15,8 @@ static Window *window;
 
 static AppTimer *progress_timer;
 
-static unsigned int sleep_time = FPS*10;
+//static unsigned int sleep_time = FPS*10;
+static unsigned int sleep_time = FPS*20;
 
 static GBitmap *bg_image;
 static BitmapLayer *bg_image_layer;
@@ -54,7 +55,7 @@ static int some_sheep_is_running=FALSE;
 #define GROUND_HEIGHT_RATIO 0.9
 static int ground_height = 108;
 
-static int gate_is_widely_open = 0;
+static int gate_is_widely_open = FALSE;
 
 #define MAX_SHEEP_NUMBER 100
 
