@@ -124,7 +124,7 @@ static void canvas_white_update_proc(Layer *this_layer, GContext *ctx) {
 }
 
 static void canvas_black_update_proc(Layer *this_layer, GContext *ctx) {
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "canvas_white_update_proc()");
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "canvas_black_update_proc()");
 
   graphics_context_set_compositing_mode(ctx, GCompOpClear);
 
@@ -281,7 +281,7 @@ static void update() {
     if (sheep_flock[asheep][X] < -1 * 17){
       some_sheep_is_running = FALSE;
       clear_sheep(asheep);
-      for (int asheep=0;asheep<MAX_SHEEP_NUMBER;asheep++) {
+      if (int asheep=0;asheep<MAX_SHEEP_NUMBER;asheep++) {
         if (sheep_flock[asheep][IS_RUNNING]==TRUE) {
           some_sheep_is_running = TRUE;
           break;
