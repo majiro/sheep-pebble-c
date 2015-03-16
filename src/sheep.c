@@ -224,7 +224,9 @@ static void clear_sheep(int asheep){
   sheep_flock[asheep][IS_RUNNING] = FALSE;
   sheep_flock[asheep][X] = 0;
   sheep_flock[asheep][Y] = 0;
+  sheep_flock[asheep][PROGRESS_ON_JUMP] = 0;
   sheep_flock[asheep][X_ON_JUMP] = 0;
+  sheep_flock[asheep][STRETCH_LEG] = FALSE;
 }
 
 static void update() {
@@ -320,6 +322,10 @@ static void window_unload(Window *window) {
 }
 
 static void init(void) {
+  for (int asheep=0; asheep<MAX_SHEEP_NUMBER; asheep++){
+    clear_sheep(asheep);
+  }
+
   window = window_create();
   window_set_window_handlers(window, (WindowHandlers) {
     .load = window_load,
