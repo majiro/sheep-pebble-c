@@ -101,7 +101,7 @@ mknofsheep (int value, char *unit, char *result)
 }
 
 static void canvas_white_update_proc(Layer *this_layer, GContext *ctx) {
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "canvas_white_update_proc()");
+  // APP_LOG(APP_LOG_LEVEL_DEBUG, "canvas_white_update_proc()");
   
   graphics_context_set_compositing_mode(ctx, GCompOpOr);
 
@@ -122,7 +122,7 @@ static void canvas_white_update_proc(Layer *this_layer, GContext *ctx) {
 }
 
 static void canvas_black_update_proc(Layer *this_layer, GContext *ctx) {
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "canvas_black_update_proc()");
+  //  APP_LOG(APP_LOG_LEVEL_DEBUG, "canvas_black_update_proc()");
 
   graphics_context_set_compositing_mode(ctx, GCompOpClear);
 
