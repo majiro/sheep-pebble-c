@@ -100,22 +100,12 @@ mknofsheep (int value, char *unit, char *result)
   return result;
 }
 
-
 static void canvas_white_update_proc(Layer *this_layer, GContext *ctx) {
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "canvas_white_update_proc()");
+  
   GRect bounds = layer_get_bounds(this_layer);
 
   graphics_context_set_compositing_mode(ctx, GCompOpOr);
-
-/*
-  graphics_draw_bitmap_in_rect(ctx, sheep00_image_white, GRect(32,40,17,13));
-
-//  graphics_draw_bitmap_in_rect(ctx, sheep01_image_white, GRect(32+10,40+10,17,13));
-  graphics_draw_bitmap_in_rect(ctx, sheep01_image_black, GRect(32+10,40+10,17,13));
-
-  graphics_draw_bitmap_in_rect(ctx, sheep00_image, GRect(32+20,40+20,17,12));
-
-*/
-
 
   // Draw the sheep
   for (int asheep=0;asheep<MAX_SHEEP_NUMBER;asheep++){
@@ -123,38 +113,37 @@ static void canvas_white_update_proc(Layer *this_layer, GContext *ctx) {
       if(sheep_flock[asheep][PROGRESS_ON_JUMP]>0){
         graphics_draw_bitmap_in_rect(ctx, sheep00_image_white, GRect(sheep_flock[asheep][X],sheep_flock[asheep][Y],17,12));
       } else {
-	    if(sheep_flock[asheep][STRETCH_LEG]==TRUE){
+            if(sheep_flock[asheep][STRETCH_LEG]==TRUE){
           graphics_draw_bitmap_in_rect(ctx, sheep00_image_white, GRect(sheep_flock[asheep][X], sheep_flock[asheep][Y],17,12));
-	    } else {
+            } else {
           graphics_draw_bitmap_in_rect(ctx, sheep01_image_white, GRect(sheep_flock[asheep][X], sheep_flock[asheep][Y],17,12));
-	    }
+            }
       }
     }
   }
 }
 
 static void canvas_black_update_proc(Layer *this_layer, GContext *ctx) {
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "canvas_white_update_proc()");
+
   graphics_context_set_compositing_mode(ctx, GCompOpClear);
-//  graphics_draw_bitmap_in_rect(ctx, sheep00_image_black, GRect(32,40,17,13));
 
   // Draw the sheep
   for (int asheep=0;asheep<MAX_SHEEP_NUMBER;asheep++){
     if(sheep_flock[asheep][IS_RUNNING]==TRUE){
       if(sheep_flock[asheep][PROGRESS_ON_JUMP]>0){
         graphics_draw_bitmap_in_rect(ctx, sheep00_image_black,
-				     GRect(sheep_flock[asheep][X],sheep_flock[asheep][Y],17,12));
+                                     GRect(sheep_flock[asheep][X],sheep_flock[asheep][Y],17,12));
       } else {
-	if(sheep_flock[asheep][STRETCH_LEG]==TRUE){
-	  graphics_draw_bitmap_in_rect(ctx, sheep00_image_black,
-				       GRect(sheep_flock[asheep][X],
-					     sheep_flock[asheep][Y],17,12));
-	  sheep_flock[asheep][STRETCH_LEG]=FALSE;
-	} else {
-	  graphics_draw_bitmap_in_rect(ctx, sheep01_image_black,
-				       GRect(sheep_flock[asheep][X],
-					     sheep_flock[asheep][Y],17,12));
-	  sheep_flock[asheep][STRETCH_LEG]=TRUE;
-	}
+        if(sheep_flock[asheep][STRETCH_LEG]==TRUE){
+          graphics_draw_bitmap_in_rect(ctx, sheep00_image_black,
+                                       GRect(sheep_flock[asheep][X],
+                                             sheep_flock[asheep][Y],17,12));
+        } else {
+          graphics_draw_bitmap_in_rect(ctx, sheep01_image_black,
+                                       GRect(sheep_flock[asheep][X],
+                                             sheep_flock[asheep][Y],17,12));
+        }
       }
     }
   }
@@ -226,6 +215,7 @@ static int calc_jump_x(int y){
 }
 
 static void send_out_sheep(int asheep){
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "send_out_sheep(%d)", asheep);
   sheep_flock[asheep][IS_RUNNING] = TRUE;
   sheep_flock[asheep][X] = DEFAULT_WIDTH + 17;
   sheep_flock[asheep][Y] = DEFAULT_HEIGHT - ground_height + ( rand() % (ground_height - 13));
@@ -233,6 +223,8 @@ static void send_out_sheep(int asheep){
 }
 
 static void clear_sheep(int asheep){
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "clear_sheep(%d)", asheep);
+  
   sheep_flock[asheep][IS_RUNNING] = FALSE;
   sheep_flock[asheep][X] = 0;
   sheep_flock[asheep][Y] = 0;
@@ -290,13 +282,13 @@ static void update() {
       some_sheep_is_running = FALSE;
       clear_sheep(asheep);
       for (int asheep=0;asheep<MAX_SHEEP_NUMBER;asheep++) {
-	if (sheep_flock[asheep][IS_RUNNING]==TRUE) {
-	  some_sheep_is_running = TRUE;
-	  break;
-	}
-	if (some_sheep_is_running == FALSE) {
-	  send_out_sheep(asheep);
-	}
+        if (sheep_flock[asheep][IS_RUNNING]==TRUE) {
+          some_sheep_is_running = TRUE;
+          break;
+        }
+        if (some_sheep_is_running == FALSE) {
+          send_out_sheep(asheep);
+        }
       }
     }
   }
@@ -322,7 +314,7 @@ static void window_unload(Window *window) {
 
   layer_destroy(canvas_white_layer);
   layer_destroy(canvas_black_layer);
-//  layer_destroy(text_layer);
+  //  layer_destroy(text_layer);
 
   gbitmap_destroy(bg_image);
   gbitmap_destroy(fence_image_white);
