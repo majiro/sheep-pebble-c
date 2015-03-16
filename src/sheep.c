@@ -31,8 +31,6 @@ static GBitmap *sheep00_image_white;
 static GBitmap *sheep00_image_black;
 static GBitmap *sheep01_image_white;
 static GBitmap *sheep01_image_black;
-static BitmapLayer *sheep_image_white_layer;
-static BitmapLayer *sheep_image_black_layer;
 
 static Layer *canvas_white_layer;
 static Layer *canvas_black_layer;
@@ -45,7 +43,7 @@ static int sheep_count = 0;
 static char sheep_count_buffer[256];
 static char *nofsheep = " sheep";
 
-static int some_sheep_is_running;
+static int some_sheep_is_running=FALSE;
 
 #define DEFAULT_WIDTH 144
 #define DEFAULT_HEIGHT 144
@@ -107,10 +105,9 @@ mknofsheep (int value, char *unit, char *result)
 static void canvas_white_update_proc(Layer *this_layer, GContext *ctx) {
   GRect bounds = layer_get_bounds(this_layer);
 
-  // Get the center of the screen (non full-screen)
-//  GPoint center = GPoint(bounds.size.w / 2, (bounds.size.h / 2));
   graphics_context_set_compositing_mode(ctx, GCompOpOr);
 
+/*
   graphics_draw_bitmap_in_rect(ctx, sheep00_image_white, GRect(32,40,17,13));
 
 //  graphics_draw_bitmap_in_rect(ctx, sheep01_image_white, GRect(32+10,40+10,17,13));
@@ -118,27 +115,20 @@ static void canvas_white_update_proc(Layer *this_layer, GContext *ctx) {
 
   graphics_draw_bitmap_in_rect(ctx, sheep00_image, GRect(32+20,40+20,17,12));
 
-
+*/
 
 
   // Draw the sheep
   for (int asheep=0;asheep<MAX_SHEEP_NUMBER;asheep++){
     if(sheep_flock[asheep][IS_RUNNING]==TRUE){
       if(sheep_flock[asheep][PROGRESS_ON_JUMP]>0){
-	graphics_draw_bitmap_in_rect(ctx, sheep00_image_white,
-				     GRect(sheep_flock[asheep][X],sheep_flock[asheep][Y],17,12));
+        graphics_draw_bitmap_in_rect(ctx, sheep00_image_white, GRect(sheep_flock[asheep][X],sheep_flock[asheep][Y],17,12));
       } else {
-	if(sheep_flock[asheep][STRETCH_LEG]==TRUE){
-	  graphics_draw_bitmap_in_rect(ctx, sheep00_image_white,
-				       GRect(sheep_flock[asheep][X],
-					     sheep_flock[asheep][Y],17,12));
-	  sheep_flock[asheep][STRETCH_LEG]=FALSE;
-	} else {
-	  graphics_draw_bitmap_in_rect(ctx, sheep01_image_white,
-				       GRect(sheep_flock[asheep][X],
-					     sheep_flock[asheep][Y],17,12));
-	  sheep_flock[asheep][STRETCH_LEG]=TRUE;
-	}
+	    if(sheep_flock[asheep][STRETCH_LEG]==TRUE){
+          graphics_draw_bitmap_in_rect(ctx, sheep00_image_white, GRect(sheep_flock[asheep][X], sheep_flock[asheep][Y],17,12));
+	    } else {
+          graphics_draw_bitmap_in_rect(ctx, sheep01_image_white, GRect(sheep_flock[asheep][X], sheep_flock[asheep][Y],17,12));
+	    }
       }
     }
   }
@@ -146,12 +136,35 @@ static void canvas_white_update_proc(Layer *this_layer, GContext *ctx) {
 
 static void canvas_black_update_proc(Layer *this_layer, GContext *ctx) {
   graphics_context_set_compositing_mode(ctx, GCompOpClear);
-  graphics_draw_bitmap_in_rect(ctx, sheep00_image_black, GRect(32,40,17,13));
+//  graphics_draw_bitmap_in_rect(ctx, sheep00_image_black, GRect(32,40,17,13));
+
+  // Draw the sheep
+  for (int asheep=0;asheep<MAX_SHEEP_NUMBER;asheep++){
+    if(sheep_flock[asheep][IS_RUNNING]==TRUE){
+      if(sheep_flock[asheep][PROGRESS_ON_JUMP]>0){
+        graphics_draw_bitmap_in_rect(ctx, sheep00_image_black,
+				     GRect(sheep_flock[asheep][X],sheep_flock[asheep][Y],17,12));
+      } else {
+	if(sheep_flock[asheep][STRETCH_LEG]==TRUE){
+	  graphics_draw_bitmap_in_rect(ctx, sheep00_image_black,
+				       GRect(sheep_flock[asheep][X],
+					     sheep_flock[asheep][Y],17,12));
+	  sheep_flock[asheep][STRETCH_LEG]=FALSE;
+	} else {
+	  graphics_draw_bitmap_in_rect(ctx, sheep01_image_black,
+				       GRect(sheep_flock[asheep][X],
+					     sheep_flock[asheep][Y],17,12));
+	  sheep_flock[asheep][STRETCH_LEG]=TRUE;
+	}
+      }
+    }
+  }
+
+
 }
 
 static void window_load(Window *window) {
   Layer *window_layer = window_get_root_layer(window);
-//  GRect bounds = layer_get_bounds(window_layer);
 
   // We do this to account for the offset due to the status bar
   // at the top of the app window.
@@ -230,8 +243,9 @@ static void clear_sheep(int asheep){
 }
 
 static void update() {
+
   // Send out a sheep
-  if (gate_is_widely_open) {
+  if (gate_is_widely_open==TRUE) {
     for (int i=0; i<MAX_SHEEP_NUMBER; i++){
       if(sheep_flock[i][IS_RUNNING] == 0){
         send_out_sheep(i);
@@ -258,12 +272,12 @@ static void update() {
     if (sheep_flock[asheep][PROGRESS_ON_JUMP] > 0 ){
       if (sheep_flock[asheep][PROGRESS_ON_JUMP] < TOP_ON_JUMP) {
         sheep_flock[asheep][Y] -= Y_MOVING_DIST;
-	sheep_flock[asheep][PROGRESS_ON_JUMP] += 1;
+        sheep_flock[asheep][PROGRESS_ON_JUMP] += 1;
       } else if (sheep_flock[asheep][PROGRESS_ON_JUMP] < TOP_ON_JUMP * 2){
-	sheep_flock[asheep][Y] += Y_MOVING_DIST;
-	sheep_flock[asheep][PROGRESS_ON_JUMP] += 1;
+        sheep_flock[asheep][Y] += Y_MOVING_DIST;
+        sheep_flock[asheep][PROGRESS_ON_JUMP] += 1;
       } else {
-	sheep_flock[asheep][PROGRESS_ON_JUMP] = 0;
+        sheep_flock[asheep][PROGRESS_ON_JUMP] = 0;
       }
     }
 
@@ -332,6 +346,8 @@ static void init(void) {
     .unload = window_unload
   });
   window_stack_push(window, false /* Animated */);
+
+  send_out_sheep(0);
 
   progress_timer = app_timer_register(sleep_time /* milliseconds */, progress_timer_callback, NULL);
 }

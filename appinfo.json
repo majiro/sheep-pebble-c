@@ -9,8 +9,13 @@
     "resources": {
         "media": [
             {
-                "file": "images/sheep00.png",
-                "name": "IMAGE_SHEEP00",
+                "file": "images/bg.png",
+                "name": "IMAGE_BG",
+                "type": "png"
+            },
+            {
+                "file": "images/fence.png",
+                "name": "IMAGE_FENCE",
                 "type": "png-trans"
             },
             {
@@ -19,14 +24,9 @@
                 "type": "png-trans"
             },
             {
-                "file": "images/fence.png",
-                "name": "IMAGE_FENCE",
+                "file": "images/sheep00.png",
+                "name": "IMAGE_SHEEP00",
                 "type": "png-trans"
-            },
-            {
-                "file": "images/bg.png",
-                "name": "IMAGE_BG",
-                "type": "png"
             }
         ]
     },
