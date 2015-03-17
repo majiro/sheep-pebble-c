@@ -131,20 +131,20 @@ static void canvas_black_update_proc(Layer *this_layer, GContext *ctx) {
       if(sheep_flock[asheep][PROGRESS_ON_JUMP]>0){
         graphics_draw_bitmap_in_rect(ctx, sheep01_image_black,
                                      GRect(sheep_flock[asheep][X],sheep_flock[asheep][Y],17,12));
-	APP_LOG(APP_LOG_LEVEL_DEBUG, "sheep00_image_black 1");
+	// APP_LOG(APP_LOG_LEVEL_DEBUG, "sheep00_image_black 1");
       } else {
         if(sheep_flock[asheep][STRETCH_LEG]==TRUE){
           graphics_draw_bitmap_in_rect(ctx, sheep01_image_black,
                                        GRect(sheep_flock[asheep][X],
                                              sheep_flock[asheep][Y],17,12));
-	  APP_LOG(APP_LOG_LEVEL_DEBUG, "sheep00_image_black 2");
+	  // APP_LOG(APP_LOG_LEVEL_DEBUG, "sheep00_image_black 2");
         } else {
           graphics_draw_bitmap_in_rect(ctx, sheep00_image_black,
                                        GRect(sheep_flock[asheep][X],
                                              sheep_flock[asheep][Y],17,12));
         }
 	sheep_flock[asheep][STRETCH_LEG]=(sheep_flock[asheep][STRETCH_LEG]+1)%2;
-	APP_LOG(APP_LOG_LEVEL_DEBUG, "sheep01_image_black:%d", sheep_flock[asheep][STRETCH_LEG]);
+	// APP_LOG(APP_LOG_LEVEL_DEBUG, "sheep01_image_black:%d", sheep_flock[asheep][STRETCH_LEG]);
       }
     }
   }
