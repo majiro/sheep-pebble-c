@@ -322,6 +322,21 @@ static void window_unload(Window *window) {
 
 }
 
+void down_single_click_handler(ClickRecognizerRef recognizer, void *context) {
+  Window *window = (Window *)context;
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "down_single_click_handler()");
+}
+void select_single_click_handler(ClickRecognizerRef recognizer, void *context) {
+  Window *window = (Window *)context;
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "select_single_click_handler()");
+}
+
+void config_provider(Window *window) {
+ // single click / repeat-on-hold config:
+  window_single_click_subscribe(BUTTON_ID_DOWN, down_single_click_handler);
+  window_single_repeating_click_subscribe(BUTTON_ID_SELECT, 1000, select_single_click_handler);
+}
+  
 static void init(void) {
   for (int asheep=0; asheep<MAX_SHEEP_NUMBER; asheep++){
     clear_sheep(asheep);
@@ -334,9 +349,11 @@ static void init(void) {
   });
   window_stack_push(window, false /* Animated */);
 
-  send_out_sheep(0);
+  window_set_click_config_provider(&window, (ClickConfigProvider) config_provider);
 
   progress_timer = app_timer_register(sleep_time /* milliseconds */, progress_timer_callback, NULL);
+
+  send_out_sheep(0);
 }
 
 static void deinit(void) {
