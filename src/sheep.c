@@ -100,7 +100,6 @@ mknofsheep (int value, char *unit, char *result)
 }
 
 static void canvas_white_update_proc(Layer *this_layer, GContext *ctx) {
-  // APP_LOG(APP_LOG_LEVEL_DEBUG, "canvas_white_update_proc()");
   
   graphics_context_set_compositing_mode(ctx, GCompOpOr);
 
@@ -121,7 +120,6 @@ static void canvas_white_update_proc(Layer *this_layer, GContext *ctx) {
 }
 
 static void canvas_black_update_proc(Layer *this_layer, GContext *ctx) {
-  //  APP_LOG(APP_LOG_LEVEL_DEBUG, "canvas_black_update_proc()");
 
   graphics_context_set_compositing_mode(ctx, GCompOpClear);
 
@@ -131,20 +129,20 @@ static void canvas_black_update_proc(Layer *this_layer, GContext *ctx) {
       if(sheep_flock[asheep][PROGRESS_ON_JUMP]>0){
         graphics_draw_bitmap_in_rect(ctx, sheep01_image_black,
                                      GRect(sheep_flock[asheep][X],sheep_flock[asheep][Y],17,12));
-	// APP_LOG(APP_LOG_LEVEL_DEBUG, "sheep00_image_black 1");
+
       } else {
         if(sheep_flock[asheep][STRETCH_LEG]==TRUE){
           graphics_draw_bitmap_in_rect(ctx, sheep01_image_black,
                                        GRect(sheep_flock[asheep][X],
                                              sheep_flock[asheep][Y],17,12));
-	  // APP_LOG(APP_LOG_LEVEL_DEBUG, "sheep00_image_black 2");
+
         } else {
           graphics_draw_bitmap_in_rect(ctx, sheep00_image_black,
                                        GRect(sheep_flock[asheep][X],
                                              sheep_flock[asheep][Y],17,12));
         }
 	sheep_flock[asheep][STRETCH_LEG]=(sheep_flock[asheep][STRETCH_LEG]+1)%2;
-	// APP_LOG(APP_LOG_LEVEL_DEBUG, "sheep01_image_black:%d", sheep_flock[asheep][STRETCH_LEG]);
+
       }
     }
   }
@@ -218,11 +216,8 @@ static int calc_jump_x(int y){
 static void send_out_sheep(int asheep){
   sheep_flock[asheep][IS_RUNNING] = TRUE;
   sheep_flock[asheep][X] = DEFAULT_WIDTH + 17;
-  sheep_flock[asheep][Y] = DEFAULT_HEIGHT - ground_height + ( rand() % ground_height );
-  // sheep_flock[asheep][Y] = DEFAULT_HEIGHT - ground_height + ( rand() % (ground_height+13));
-  // APP_LOG(APP_LOG_LEVEL_DEBUG, "Y=%d", sheep_flock[asheep][Y]);
+  sheep_flock[asheep][Y] = DEFAULT_HEIGHT - ground_height + ( rand() % ground_height ) - 13;
   sheep_flock[asheep][X_ON_JUMP] = calc_jump_x(sheep_flock[asheep][Y]);
-  // APP_LOG(APP_LOG_LEVEL_DEBUG, "calc_jump_x(%d)=%d", asheep, sheep_flock[asheep][X_ON_JUMP]);
 }
 
 static void clear_sheep(int asheep){
@@ -329,11 +324,9 @@ static void window_unload(Window *window) {
 
 void down_single_click_handler(ClickRecognizerRef recognizer, void *context) {
   gate_is_widely_open=TRUE;
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "down_single_click_handler()");
 }
 void up_single_click_handler(ClickRecognizerRef recognizer, void *context) {
   gate_is_widely_open=FALSE;
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "select_single_click_handler()");
 }
 
 void config_provider(Window *window) {
