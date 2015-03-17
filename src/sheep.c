@@ -49,7 +49,7 @@ static int some_sheep_is_running=FALSE;
 #define X_MOVING_DIST 5
 #define Y_MOVING_DIST 3
 
-#define TOP_ON_JUMP 5
+#define TOP_ON_JUMP 4
 
 #define GROUND_HEIGHT_RATIO 0.9
 static int ground_height = 70;
@@ -216,7 +216,7 @@ static int calc_jump_x(int y){
 static void send_out_sheep(int asheep){
   sheep_flock[asheep][IS_RUNNING] = TRUE;
   sheep_flock[asheep][X] = DEFAULT_WIDTH + 17;
-  sheep_flock[asheep][Y] = DEFAULT_HEIGHT - ground_height + ( rand() % ground_height - 6 ) - 6;
+  sheep_flock[asheep][Y] = DEFAULT_HEIGHT-5 - (rand()%(ground_height-5));
   sheep_flock[asheep][X_ON_JUMP] = calc_jump_x(sheep_flock[asheep][Y]);
 }
 
@@ -257,10 +257,10 @@ static void update() {
 
     // behavior during jump
     if (sheep_flock[asheep][PROGRESS_ON_JUMP] > 0 ){
-      if (sheep_flock[asheep][PROGRESS_ON_JUMP] < TOP_ON_JUMP) {
+      if (sheep_flock[asheep][PROGRESS_ON_JUMP] <= TOP_ON_JUMP) {
         sheep_flock[asheep][Y] -= Y_MOVING_DIST;
         sheep_flock[asheep][PROGRESS_ON_JUMP] += 1;
-      } else if (sheep_flock[asheep][PROGRESS_ON_JUMP] < TOP_ON_JUMP * 2){
+      } else if (sheep_flock[asheep][PROGRESS_ON_JUMP] <= TOP_ON_JUMP * 2){
         sheep_flock[asheep][Y] += Y_MOVING_DIST;
         sheep_flock[asheep][PROGRESS_ON_JUMP] += 1;
       } else {
