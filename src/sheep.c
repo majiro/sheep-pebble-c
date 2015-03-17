@@ -350,7 +350,7 @@ static void init(void) {
   });
   window_stack_push(window, false /* Animated */);
 
-  window_set_click_config_provider(&window, (ClickConfigProvider) config_provider);
+  window_set_click_config_provider(window, (ClickConfigProvider) config_provider);
 
   progress_timer = app_timer_register(sleep_time /* milliseconds */, progress_timer_callback, NULL);
 
