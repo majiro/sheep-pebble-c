@@ -15,7 +15,7 @@ static Window *window;
 
 static AppTimer *progress_timer;
 
-static unsigned int sleep_time = FPS*20;
+static unsigned int sleep_time = FPS*10;
 
 static GBitmap *bg_image;
 static BitmapLayer *bg_image_layer;
