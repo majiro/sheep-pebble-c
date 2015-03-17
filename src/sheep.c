@@ -216,7 +216,7 @@ static int calc_jump_x(int y){
 static void send_out_sheep(int asheep){
   sheep_flock[asheep][IS_RUNNING] = TRUE;
   sheep_flock[asheep][X] = DEFAULT_WIDTH + 17;
-  sheep_flock[asheep][Y] = DEFAULT_HEIGHT - ground_height + ( rand() % ground_height ) - 6;
+  sheep_flock[asheep][Y] = DEFAULT_HEIGHT - ground_height + ( rand() % ground_height - 6 ) - 6;
   sheep_flock[asheep][X_ON_JUMP] = calc_jump_x(sheep_flock[asheep][Y]);
 }
 
