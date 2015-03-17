@@ -323,18 +323,18 @@ static void window_unload(Window *window) {
 }
 
 void down_single_click_handler(ClickRecognizerRef recognizer, void *context) {
-  Window *window = (Window *)context;
+  gate_is_widely_open=TRUE;
   APP_LOG(APP_LOG_LEVEL_DEBUG, "down_single_click_handler()");
 }
-void select_single_click_handler(ClickRecognizerRef recognizer, void *context) {
-  Window *window = (Window *)context;
+void up_single_click_handler(ClickRecognizerRef recognizer, void *context) {
+  gate_is_widely_open=FALSE;
   APP_LOG(APP_LOG_LEVEL_DEBUG, "select_single_click_handler()");
 }
 
 void config_provider(Window *window) {
  // single click / repeat-on-hold config:
   window_single_click_subscribe(BUTTON_ID_DOWN, down_single_click_handler);
-  window_single_repeating_click_subscribe(BUTTON_ID_SELECT, 1000, select_single_click_handler);
+  window_single_click_subscribe(BUTTON_ID_UP, up_single_click_handler);
 }
   
 static void init(void) {
