@@ -310,7 +310,7 @@ static void window_unload(Window *window) {
 
   layer_destroy(canvas_white_layer);
   layer_destroy(canvas_black_layer);
-  //  layer_destroy(text_layer);
+  text_layer_destroy(text_layer);
 
   gbitmap_destroy(bg_image);
   gbitmap_destroy(fence_image_white);
