@@ -331,7 +331,7 @@ void up_single_click_handler(ClickRecognizerRef recognizer, void *context) {
 }
 
 void config_provider(Window *window) {
- // single click / repeat-on-hold config:
+ // single click config:
   window_single_click_subscribe(BUTTON_ID_DOWN, down_single_click_handler);
   window_single_click_subscribe(BUTTON_ID_UP, up_single_click_handler);
 }
@@ -346,7 +346,7 @@ static void init(void) {
     .load = window_load,
     .unload = window_unload
   });
-  window_stack_push(window, false /* Animated */);
+  window_stack_push(window, false);
 
   window_set_click_config_provider(window, (ClickConfigProvider) config_provider);
 
