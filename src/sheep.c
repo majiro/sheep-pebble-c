@@ -1,6 +1,7 @@
 /*
+  Sheep for Pebble-C
 
-
+  License: WTFPL
  */
 
 #include <pebble.h>
