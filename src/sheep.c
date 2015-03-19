@@ -95,7 +95,7 @@ mknofsheep (int value, char *unit, char *result)
     value /= 10;
   } while (value);
 
-  strcat(result, unit);  
+  strcat(result, unit);
 
   return result;
 }
@@ -270,7 +270,7 @@ static void update() {
     }
 
     // count up
-    if (sheep_flock[asheep][PROGRESS_ON_JUMP] == TOP_ON_JUMP){
+    if (sheep_flock[asheep][PROGRESS_ON_JUMP] == TOP_ON_JUMP && sheep_count < 999999){
       sheep_count += 1;
     }
 
