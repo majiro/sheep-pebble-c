@@ -21,11 +21,6 @@ static unsigned int sleep_time = FPS*10;
 static GBitmap *bg_image;
 static BitmapLayer *bg_image_layer;
 
-static GBitmap *fence_image_white;
-static GBitmap *fence_image_black;
-static BitmapLayer *fence_image_white_layer;
-static BitmapLayer *fence_image_black_layer;
-
 static GBitmap *sheep00_image_white;
 static GBitmap *sheep00_image_black;
 static GBitmap *sheep01_image_white;
@@ -46,6 +41,9 @@ static int some_sheep_is_running=FALSE;
 
 #define DEFAULT_WIDTH 144
 #define DEFAULT_HEIGHT 144
+
+#define FENCE_WIDTH 52
+#define FENCE_HEIGHT 78
 
 #define X_MOVING_DIST 5
 #define Y_MOVING_DIST 3
@@ -162,9 +160,6 @@ static void window_load(Window *window) {
 
   bg_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BG);
 
-  fence_image_white = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_FENCE_WHITE);
-  fence_image_black = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_FENCE_BLACK);
-
   sheep00_image_white = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_SHEEP00_WHITE);
   sheep00_image_black = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_SHEEP00_BLACK);
 
@@ -177,20 +172,6 @@ static void window_load(Window *window) {
   bitmap_layer_set_bitmap(bg_image_layer, bg_image);
   bitmap_layer_set_compositing_mode(bg_image_layer, GCompOpAssign);
   layer_add_child(window_layer, bitmap_layer_get_layer(bg_image_layer));
-
-  // Use GCompOpOr to display the white portions of the fence image
-  fence_image_white_layer = bitmap_layer_create(image_frame);
-  bitmap_layer_set_alignment(fence_image_white_layer, GAlignBottom);
-  bitmap_layer_set_bitmap(fence_image_white_layer, fence_image_white);
-  bitmap_layer_set_compositing_mode(fence_image_white_layer, GCompOpOr);
-  layer_add_child(window_layer, bitmap_layer_get_layer(fence_image_white_layer));
-
-  // Use GCompOpClear to display the black portions of the fence image
-  fence_image_black_layer = bitmap_layer_create(image_frame);
-  bitmap_layer_set_alignment(fence_image_black_layer, GAlignBottom);
-  bitmap_layer_set_bitmap(fence_image_black_layer, fence_image_black);
-  bitmap_layer_set_compositing_mode(fence_image_black_layer, GCompOpClear);
-  layer_add_child(window_layer, bitmap_layer_get_layer(fence_image_black_layer));
 
   // Create Layer
   canvas_white_layer = layer_create(GRect(0, 0, image_frame.size.w, image_frame.size.h));
@@ -209,9 +190,7 @@ static void window_load(Window *window) {
 }
 
 static int calc_jump_x(int y){
-  int fw = fence_image_white->bounds.size.w;
-  int fh = fence_image_white->bounds.size.h;
-  return -1 * (y - DEFAULT_HEIGHT) * fw / fh + (DEFAULT_WIDTH - fw) / 2;
+  return -1 * (y - DEFAULT_HEIGHT) * FENCE_WIDTH / FENCE_HEIGHT + (DEFAULT_WIDTH - FENCE_WIDTH) / 2;
 }
 
 static void send_out_sheep(int asheep){
@@ -306,16 +285,12 @@ static void progress_timer_callback(void *data) {
 
 static void window_unload(Window *window) {
   bitmap_layer_destroy(bg_image_layer);
-  bitmap_layer_destroy(fence_image_white_layer);
-  bitmap_layer_destroy(fence_image_black_layer);
 
   layer_destroy(canvas_white_layer);
   layer_destroy(canvas_black_layer);
   text_layer_destroy(text_layer);
 
   gbitmap_destroy(bg_image);
-  gbitmap_destroy(fence_image_white);
-  gbitmap_destroy(fence_image_black);
   gbitmap_destroy(sheep00_image_white);
   gbitmap_destroy(sheep00_image_black);
   gbitmap_destroy(sheep01_image_white);
