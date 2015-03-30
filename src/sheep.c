@@ -301,13 +301,23 @@ static void window_unload(Window *window) {
 void down_single_click_handler(ClickRecognizerRef recognizer, void *context) {
   gate_is_widely_open=TRUE;
 }
+void select_single_click_handler(ClickRecognizerRef recognizer, void *context) {
+  for (int asheep=0;asheep<MAX_SHEEP_NUMBER;asheep++) {
+    if (sheep_flock[asheep][IS_RUNNING]==FALSE) {
+      send_out_sheep(asheep);
+      break;
+    }
+  }
+}
 void up_single_click_handler(ClickRecognizerRef recognizer, void *context) {
   gate_is_widely_open=FALSE;
 }
 
+
 void config_provider(Window *window) {
- // single click config:
+  // single click config:
   window_single_click_subscribe(BUTTON_ID_DOWN, down_single_click_handler);
+  window_single_click_subscribe(BUTTON_ID_SELECT, select_single_click_handler);
   window_single_click_subscribe(BUTTON_ID_UP, up_single_click_handler);
 }
   
